@@ -105,7 +105,7 @@ export const login = async (req,res) => {
     }
 }
 //to get profile
-export const getMe = aasync (req, res) => {
+export const getMe = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
         if(!user) {
@@ -120,6 +120,39 @@ export const getMe = aasync (req, res) => {
         res.status(500).json({
            message: err.message 
         });
+    }
+}
 
+//verify the email
+export const verifyEmail = async (req, res) => {
+    try {
+        const {email, code} = req.body;
+        if (!email || !code) {
+            return res.status(400).json({message: "Email and code are required."})
+        }
+        const user = await User.findOne({email});
+        if(!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        if(user.isVerified) {
+            return res.status(400).json({message: "Email already verified."})
+        }
+        if(user.verificationToken !== code) {
+            return res.status(400).json({message: "Invalid verification code."})
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        await user.save();
+        res.status(200).json({
+            message: "Email verified successfully",
+            success: true,
+        });
+    } 
+    catch (error) {
+        res.status(500).json({
+           message: err.message, 
+           success: false
+        });
     }
 }
