@@ -1,5 +1,7 @@
 import User from '../models/user.models.js';
 import bcrypt from 'bcryptjs';
+import sendEmail from '../utils/sendEmail.js';
+import jwt from 'jsonwebtoken';
 
 //Register
 export const Register = async (req, res) => {
@@ -25,13 +27,99 @@ export const Register = async (req, res) => {
             verificationToken
         });
         try {
-            
+            await sendEmail({
+                email,
+                subject: "Verify Your Email - Real Estate Platform",
+                message: `<p>Your email verification code is : <strong>${verificationToken}</strong></p><p>Please enter this code on the verification page to activate your account</p>`
+            });
         } 
-        catch (error) {
-            
+        catch (emailError) {
+            console.error("Failed to send verification email:", emailError);
+            //create user
+
         }
+        res.status(201).json({
+            message: "User registered. Please check your email for the verification code.",
+            user:{
+                email: user.email,
+                name: user.name,
+                role: user.role
+            }
+        });
     }
-    catch (error){
+    catch (err){
+        res.status(500).json({
+           message: err.message 
+        });
+
+    }
+}
+
+//login 
+export const login = async (req,res) => {
+    try {
+        const { email, password} = req.body;
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and password are required."
+            });
+        }
+        const user = await User.findOne({email});
+        if (!user) {
+            return res.status(400).json({
+                message: "Invalid email or password"
+            })
+        }
+        if(!user.isVerified) {
+            return res.status(403).json({
+                message: "please verify your email or contact support"
+            });
+        }
+       const isMatch = await bcrypt.compare(password, user.password);
+       if (!isMatch) {
+        return res.status(400).json({
+            message: "Invalid email or password"
+        })
+       } 
+       if(user.isBlocked) {
+        return res.status(403).json({
+            message: "Your account has been blocked by an admin. Please contact support."
+        });
+       }
+
+       //token
+       const token = jwt.sign({id: user._id, role: user.role}, process.env.JWT_SECRET, {
+        expiresIn: "7d"
+       });
+       res.json({
+        message: "Login sucessful",
+        token,
+        user,
+       });
+
+    } catch (err) {
+        res.status(500).json({
+           message: err.message 
+        });
+        
+    }
+}
+//to get profile
+export const getMe = aasync (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password");
+        if(!user) {
+            return res.status(404).json({message: "user not found"});
+        }
+        res.json({
+            success: true,
+            user,
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+           message: err.message 
+        });
 
     }
 }

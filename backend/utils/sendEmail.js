@@ -1,4 +1,4 @@
-const sendEmail = async (option) => {
+const sendEmail = async (options) => {
     try {
         const BREVO_API_KEY = process.env.BREVO_KEY_API?.trim();
         if (!BREVO_API_KEY) {
@@ -11,8 +11,8 @@ const sendEmail = async (option) => {
                 name: "Real Estate Platform",
                 email: process.env.EMAIL_USER
             },
-            to: [{email: option.email}],
-            subject: option.subject,
+            to: [{email: options.email}],
+            subject: options.subject,
             htmlContent: options.message
         };
 
@@ -41,7 +41,7 @@ const sendEmail = async (option) => {
 
         catch (error) {
            console.error("Brevo Email Error:", result)
-        throw new Error("Couldnot send email via Brevo");
+        throw new Error("Could not send email via Brevo");
 
         }
 };
