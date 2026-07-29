@@ -2,6 +2,7 @@ import User from '../models/user.models.js';
 import bcrypt from 'bcryptjs';
 import sendEmail from '../utils/sendEmail.js';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 //Register
 export const Register = async (req, res) => {
@@ -200,3 +201,32 @@ export const forgotPassword = async (req, res) => {
         res.status(500).json({ message: err.message, success: false });
     }
 };
+
+//Reset Password
+export const resetPassword = async (req, res) => {
+     try {
+        const {token} = req.params;
+        const {password} = req.body;
+        const resetPasswordToken = crypto.createHash("sha256").update(token).digest("hex");
+        const user = await User.findOne({
+            resetPasswordToken,
+            resetPasswordExpire: {$gt: Date.now() },
+        });
+        if(!user) {
+            return res.status(400).json({message: "Invalid or expired password reset token", success: false});
+        }
+        user.password = await bcrypt.hash(password, 10);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+        res.status(200).json({
+            message: "Password updated successfully",
+            success: true
+        });
+
+
+     } catch (err) {
+        res.status(500).json({ message: err.message, success: false });
+     }
+}
