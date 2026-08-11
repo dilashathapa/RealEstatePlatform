@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
 //Register
-export const Register = async (req, res) => {
+export const register = async (req, res) => {
     try {
         const {name, email, password, role} = req.body;
         const userExists = await User.findOne ({email});
@@ -150,7 +150,7 @@ export const verifyEmail = async (req, res) => {
             success: true,
         });
     } 
-    catch (error) {
+    catch (err) {
         res.status(500).json({
            message: err.message, 
            success: false
