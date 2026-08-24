@@ -6,6 +6,7 @@ import { connectDB } from './config/db.js';
 import authRouter from './routes/auth.routes.js';
 import adminRouter from './routes/admin.routes.js';
 import agentRouter from './routes/agent.routes.js';
+import { uploadSingle } from './middlewares/upload.middleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,21 @@ app.get("/api/health", (req, res) => {
         success: true,
         message: "Server is running",
         timestamp: new Date().toISOString()
+    });
+});
+// Test image upload endpoint
+app.post('/api/test-upload', uploadSingle, (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({
+            success: false,
+            message: 'No file uploaded'
+        });
+    }
+    
+    res.status(200).json({
+        success: true,
+        message: 'File uploaded successfully',
+        file: req.file
     });
 });
 
