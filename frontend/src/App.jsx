@@ -16,6 +16,9 @@ import Profile from './pages/Profile';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AgentDashboard from './pages/AgentDashboard';
+import AddProperty from './pages/AddProperty';
+import MyProperties from './pages/MyProperties';
+import PropertyList from './pages/PropertyList';
 
 function App() {
     return (
@@ -38,6 +41,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/properties" element={<PropertyList />} />
 
                         {/* Protected Routes */}
                         <Route path="/dashboard" element={
@@ -69,6 +73,16 @@ function App() {
                         <Route path="/agent/dashboard" element={
                             <PrivateRoute roles={['seller']}>
                                 <AgentDashboard />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/agent/properties/add" element={
+                            <PrivateRoute roles={['seller']}>
+                                <AddProperty />
+                            </PrivateRoute>
+                        } />
+                        <Route path="/agent/properties" element={
+                            <PrivateRoute roles={['seller']}>
+                                <MyProperties />
                             </PrivateRoute>
                         } />
                     </Routes>

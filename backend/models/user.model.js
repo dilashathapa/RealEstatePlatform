@@ -20,17 +20,20 @@ const userSchema = new mongoose.Schema({
         default: "buyer"
     },
     phone: {
-        type: String
+        type: String,
+        default: ""
     },
     isBlocked: {
         type: Boolean,
         default: false
     },
     profilePic: {
-        type: String
+        type: String,
+        default: ""
     },
     address: {
-        type: String
+        type: String,
+        default: ""
     },
     isApproved: {
         type: Boolean,
@@ -38,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     isVerified: {
         type: Boolean,
-        default: false
+        default: true
     },
     verificationToken: {
         type: String
@@ -48,7 +51,11 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordExpire: {
         type: Date
-    }
+    },
+    favorites: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'property'
+    }] 
 }, {
     timestamps: true
 });

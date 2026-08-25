@@ -7,7 +7,8 @@ import {
     HeartIcon,
     UserCircleIcon,
     Bars3Icon,
-    XMarkIcon
+    XMarkIcon,
+    PlusIcon
 } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
@@ -35,7 +36,10 @@ const Navbar = () => {
     }
 
     if (isAgent) {
-        navLinks.push({ to: '/agent/dashboard', label: 'Agent Panel', icon: UserCircleIcon });
+        navLinks.push({ to: '/agent/dashboard', label: 'Agent Panel', icon: UserCircleIcon },
+             { to: '/agent/properties', label: 'My Properties', icon: BuildingOfficeIcon },
+        { to: '/agent/properties/add', label: 'Add Property', icon: PlusIcon }
+        );
     }
 
     return (
