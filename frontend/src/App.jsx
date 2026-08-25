@@ -22,6 +22,7 @@ import PropertyList from './pages/PropertyList';
 import PropertyDetails from './pages/PropertyDetails'; 
 import Favorites from './pages/Favorites'; 
 import AdminUserManagement from './pages/AdminUserManagement';
+import AdminPropertyManagement from './pages/AdminPropertyManagement';
 
 function App() {
     return (
@@ -81,6 +82,11 @@ function App() {
                         <Route path="/admin/users" element={
                         <PrivateRoute roles={['admin']}>
                             <AdminUserManagement />
+                        </PrivateRoute>
+                        } />
+                        <Route path="/admin/properties" element={
+                        <PrivateRoute roles={['admin']}>
+                            <AdminPropertyManagement />
                         </PrivateRoute>
                         } />
 

@@ -6,6 +6,7 @@ import {
     BuildingOfficeIcon, 
     HeartIcon,
     UserCircleIcon,
+    UsersIcon,
     Bars3Icon,
     XMarkIcon,
     PlusIcon
@@ -32,14 +33,19 @@ const Navbar = () => {
     }
 
     if (isAdmin) {
-        navLinks.push({ to: '/admin/dashboard', label: 'Admin Panel', icon: UserCircleIcon });
+    navLinks.push(
+        { to: '/admin/dashboard', label: 'Dashboard', icon: UserCircleIcon },
+        { to: '/admin/users', label: 'Users', icon: UsersIcon },
+        { to: '/admin/properties', label: 'Properties', icon: BuildingOfficeIcon }
+    );
     }
 
     if (isAgent) {
-        navLinks.push({ to: '/agent/dashboard', label: 'Agent Panel', icon: UserCircleIcon },
-             { to: '/agent/properties', label: 'My Properties', icon: BuildingOfficeIcon },
-        { to: '/agent/properties/add', label: 'Add Property', icon: PlusIcon }
-        );
+        navLinks.push(
+            { to: '/agent/dashboard', label: 'Agent Panel', icon: UserCircleIcon },
+            { to: '/agent/properties', label: 'My Properties', icon: BuildingOfficeIcon },
+            { to: '/agent/properties/add', label: 'Add Property', icon: PlusIcon }
+    );
     }
 
     return (
