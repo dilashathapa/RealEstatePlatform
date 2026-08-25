@@ -21,6 +21,7 @@ import MyProperties from './pages/MyProperties';
 import PropertyList from './pages/PropertyList';
 import PropertyDetails from './pages/PropertyDetails'; 
 import Favorites from './pages/Favorites'; 
+import AdminUserManagement from './pages/AdminUserManagement';
 
 function App() {
     return (
@@ -75,6 +76,12 @@ function App() {
                             <PrivateRoute roles={['admin']}>
                                 <AdminDashboard />
                             </PrivateRoute>
+                        } />
+                        
+                        <Route path="/admin/users" element={
+                        <PrivateRoute roles={['admin']}>
+                            <AdminUserManagement />
+                        </PrivateRoute>
                         } />
 
                         {/* Agent Routes */}
