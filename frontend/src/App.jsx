@@ -19,6 +19,8 @@ import AgentDashboard from './pages/AgentDashboard';
 import AddProperty from './pages/AddProperty';
 import MyProperties from './pages/MyProperties';
 import PropertyList from './pages/PropertyList';
+import PropertyDetails from './pages/PropertyDetails'; 
+import Favorites from './pages/Favorites'; 
 
 function App() {
     return (
@@ -42,6 +44,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/properties" element={<PropertyList />} />
+                        <Route path="/properties/:id" element={<PropertyDetails />} /> 
 
                         {/* Protected Routes */}
                         <Route path="/dashboard" element={
@@ -61,6 +64,11 @@ function App() {
                                 <UserDashboard />
                             </PrivateRoute>
                         } />
+                        <Route path="/favorites" element={
+                            <PrivateRoute roles={['buyer']}>
+                                <Favorites />
+                            </PrivateRoute>
+                        } /> 
 
                         {/* Admin Routes */}
                         <Route path="/admin/dashboard" element={

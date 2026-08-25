@@ -28,7 +28,7 @@ const Navbar = () => {
     ];
 
     if (isAuthenticated && !isAdmin && !isAgent) {
-        navLinks.push({ to: '/favorites', label: 'Favorites', icon: HeartIcon });
+    navLinks.push({ to: '/favorites', label: 'Favorites', icon: HeartIcon });
     }
 
     if (isAdmin) {
